@@ -1,0 +1,6 @@
+[package]
+name = "kiss-ui"
+version = "2.0.0alpha"
+authors = ["Austin Bonander <austin.bonander@gmail.com>"]
+
+[dependencies]

@@ -1,0 +1,1 @@
+paths = ["api/", "linux/", "win32/"]

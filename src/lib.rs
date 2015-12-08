@@ -3,22 +3,23 @@ pub mod backend;
 pub mod widget;
 pub mod window;
 
-use backend::Backend;
+use backend::{Backend, BackendImpl};
 use window::WindowBuilder;
 
-pub fn start<F, B = backend::BackendImpl>(init_fn: F) where B: Backend,
-    F: FnOnce() -> WindowBuilder {
+pub use window::Window;
+
+pub fn start<F>(init_fn: F) where F: FnOnce() -> WindowBuilder {
     
-    B::init(init_fn());
-    B::start_event_loop();
+    BackendImpl::start(init_fn());
 }
 
+#[macro_export]
 macro_rules! builder {
-    (($builder_name:ident: $ty:ident) $($field:ident = $expr:expr)*;) => (
-        fn $builder_name() -> <$builder_name as ::widget::Widget>::Builder {
-            let builder = <$builder_name as ::widget::Widget>::Builder::default();
+    ($builder_name:ident($ty:ident) { $($bfield:ident => $expr:expr);*; }) => (
+        fn $builder_name() -> <$ty as $crate::widget::Widget>::Builder {
+            let mut builder = <<$ty as $crate::widget::Widget>::Builder as Default>::default();
 
-            $(builder = builder.$field($expr);),*
+            $(builder = builder.$bfield($expr);),*
 
             builder
         }

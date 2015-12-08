@@ -14,7 +14,7 @@ pub type BackendImpl = win32::Backend;
 pub type BackendImpl = gtk::Backend;
 
 pub trait Backend {
-    type Window: Widget + From<WindowBuilder>;
+    type Window: Widget<Builder = WindowBuilder>;
 
     fn start(window: WindowBuilder);
 }
